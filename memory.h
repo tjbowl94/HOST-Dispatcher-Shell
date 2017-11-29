@@ -9,6 +9,7 @@
 */
 
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -19,10 +20,13 @@ struct mab
     unsigned int size;
     int allocated;
 
+    struct mab* prev;
     struct mab* next;
 };
 
 struct mab* create_null_mab();
-struct mab* search_memory(struct mab* m, unsigned int size);
-struct mab* allocate_memory(struct mab* m, unsigned int size);
-struct mab* free_memory(struct mab* m);
+struct mab* fit_memory(struct mab* mem_block, unsigned int size);
+struct mab* allocate_memory(struct mab* mem_block, unsigned int size);
+struct mab* free_memory(struct mab* mem_block);
+struct mab* split_memory(struct mab* mem_block, unsigned int size);
+struct mab* merge_memory(struct mab* mem_block);
