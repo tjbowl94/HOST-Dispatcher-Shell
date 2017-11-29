@@ -9,8 +9,12 @@
 */
 
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "memory.h"
 
 
 #define PCB_UNINITIALIZED   0
@@ -26,6 +30,7 @@ struct pcb
     unsigned int arrival_time;
     unsigned int priority;
     unsigned int remaining_cpu_time;
+    unsigned int status;
 
     unsigned int num_printers;
     unsigned int num_scanners;
@@ -33,9 +38,7 @@ struct pcb
     unsigned int num_drives;
     unsigned int mbytes;
 
-    unsigned int status;
-
-    // Pointer to memory block
+    struct mab* mem_block;
 
     struct pcb* next;
 };
