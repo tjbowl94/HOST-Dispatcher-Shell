@@ -17,6 +17,10 @@
 #include "memory.h"
 
 
+#define MAX_ARGS            3
+
+#define DEFAULT_PROCESS     "./process"
+
 #define PCB_UNINITIALIZED   0
 #define PCB_INITIALIZED     1
 #define PCB_READY           2
@@ -26,7 +30,8 @@
 
 struct pcb
 {
-    pid_t pid;                              
+    pid_t pid;                      
+    char* args[MAX_ARGS];        
     unsigned int arrival_time;
     unsigned int priority;
     unsigned int remaining_cpu_time;
@@ -48,5 +53,5 @@ struct pcb* start_pcb(struct pcb* p);
 struct pcb* suspend_pcb(struct pcb* p);
 struct pcb* terminate_pcb(struct pcb* p);
 
-struct pcb* enqueue_pcb(struct pcb* p1, struct pcb* p2);
-struct pcb* dequeue_pcb(struct pcb* p);
+struct pcb* enqueue_pcb(struct pcb* head, struct pcb* p);
+struct pcb* dequeue_pcb(struct pcb* head);

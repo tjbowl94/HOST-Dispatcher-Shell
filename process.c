@@ -16,6 +16,8 @@ struct pcb* create_null_pcb()
 {
     struct pcb* p = (struct pcb*)malloc(sizeof(struct pcb));
     p->pid = 0;
+    p->args[0] = DEFAULT_PROCESS;
+    p->args[1] = NULL;
     p->arrival_time = 0;
     p->priority = 0;
     p->remaining_cpu_time = 0;
@@ -25,8 +27,8 @@ struct pcb* create_null_pcb()
     p->num_modems = 0;
     p->num_drives = 0;
     p->mbytes = 0;
-    mem_block = NULL;
-    next = NULL;
+    p->mem_block = NULL;
+    p->next = NULL;
 
     return p;
 }
@@ -74,12 +76,34 @@ struct pcb* terminate_pcb(struct pcb* p)
     return p;
 }
 
-struct pcb* enqueue_pcb(struct pcb* p1, struct pcb* p2)
+struct pcb* enqueue_pcb(struct pcb* head, struct pcb* p)
 {
-
+    struct pcb* curPcb = head;
+    if (head)
+    {
+        while (curPcb->next)
+        {
+            curPcb = curPcb->next;
+        }
+        curPcb->next = p;
+        return head;
+    }
+    else
+    {
+        return p;
+    }
 }
 
-struct pcb* dequeue_pcb(struct pcb* p)
+struct pcb* dequeue_pcb(struct pcb* head)
 {
-
+    struct pcb* p;
+    if (head && (p = *head))
+    {
+        *head = p->next;
+        return p;
+    }
+    else
+    {
+        return NULL;
+    }
 }
