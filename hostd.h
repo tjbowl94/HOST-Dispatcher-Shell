@@ -30,5 +30,5 @@
 
 void print_usage();
 void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue);
-void initialize_system(struct mab* mem, unsigned int* r_printers, unsigned int* r_scanners, unsigned int* r_modems, unsigned int* r_drives);
+void initialize_system(struct mab* mem, struct resources* rsrcs);
 bool complete(struct pcb* i_q, struct pcb* r_t_q, struct pcb* u_j_q, struct pcb* p_one_q, struct pcb* p_two_q, struct pcb* p_three_q, struct pcb* cur_p);

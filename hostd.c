@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
             }
         }
 
-        while(user_job_queue && memory_fit(memory, user_job_queue->mbytes) && 
+        while(user_job_queue && fit_memory(memory, user_job_queue->mbytes) && 
         check_resources(user_job_queue, rsrcs))
         {
             struct pcb* p = dequeue_pcb(&user_job_queue);
