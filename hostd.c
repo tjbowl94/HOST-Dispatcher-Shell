@@ -67,7 +67,7 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
     while (!feof(input_list_stream))
     {
         process = create_null_pcb();
-        if (fscanf(input_list_stream, "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d"
+        if (fscanf(input_list_stream, "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d",
             &(process->arrival_time),
             &(process->priority),
             &(process->remaining_cpu_time),
