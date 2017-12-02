@@ -94,9 +94,8 @@ struct pcb* enqueue_pcb(struct pcb* head, struct pcb* p)
     }
 }
 
-struct pcb* dequeue_pcb(struct pcb* head)
+struct pcb* dequeue_pcb(struct pcb** head)
 {
-    /*
     struct pcb* p;
     if (head && (p = *head))
     {
@@ -107,6 +106,4 @@ struct pcb* dequeue_pcb(struct pcb* head)
     {
         return NULL;
     }
-    */
-    return NULL;
 }
