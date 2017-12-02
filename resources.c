@@ -12,13 +12,14 @@
 #include "resources.h"
 
 
-void create_null_resources()
+struct resources* create_null_resources()
 {
     struct resources* rsrcs = (struct resources*)malloc(sizeof(struct resources));
     rsrcs->remaining_printers = 0;
     rsrcs->remaining_scanners = 0;
     rsrcs->remaining_modems = 0;
     rsrcs->remaining_drives = 0;
+    return resrcs;
 }
 
 bool check_resources(struct pcb* p, struct resources* rsrcs)
