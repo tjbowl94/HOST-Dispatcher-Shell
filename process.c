@@ -61,7 +61,7 @@ struct pcb* start_pcb(struct pcb* p)
 struct pcb* suspend_pcb(struct pcb* p)
 {
     int status;
-    kill(p->pid, SIGSTP);
+    kill(p->pid, SIGTSTP);
     waitpid(p->pid, &status, WUNTRACED);
     p->status = PCB_SUSPENDED;
     return p;
