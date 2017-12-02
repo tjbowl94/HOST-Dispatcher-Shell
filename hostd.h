@@ -20,3 +20,4 @@
 
 #include "process.h"
 
+void print_usage();
