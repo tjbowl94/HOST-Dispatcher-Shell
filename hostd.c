@@ -17,8 +17,8 @@ int main(int argc, char* argv[])
     char* input_file;
     FILE* input_list_stream;
     struct pcb* input_queue = NULL;
-    struct_pcb* current_process = NULL;
-    struct_pcb* process = NULL;
+    struct pcb* current_process = NULL;
+    struct pcb* process = NULL;
     int timer = 0;
 
     if (argc == 2)
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        print_usage()
+        print_usage();
     }
 
     return 0;
@@ -35,5 +35,5 @@ int main(int argc, char* argv[])
 
 void print_usage()
 {
-    printf("Please supply a file specifying a sequence of processes. as an argument when running this file.");
+    printf("Please supply a file specifying a sequence of processes as an argument when running this file.");
 }
