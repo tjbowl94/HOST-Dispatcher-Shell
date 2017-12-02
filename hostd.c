@@ -60,7 +60,7 @@ void print_usage()
     printf("\nPlease supply a file specifying a sequence of processes as an argument when running this file.\n\n");
 }
 
-void fill_input_queue(char* input_file, FILE*, input_list_stream, struct pcb* input_queue)
+void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue)
 {
     struct pcb* process;
 
