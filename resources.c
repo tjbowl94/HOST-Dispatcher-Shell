@@ -19,7 +19,7 @@ struct resources* create_null_resources()
     rsrcs->remaining_scanners = 0;
     rsrcs->remaining_modems = 0;
     rsrcs->remaining_drives = 0;
-    return resrcs;
+    return rsrcs;
 }
 
 bool check_resources(struct pcb* p, struct resources* rsrcs)
