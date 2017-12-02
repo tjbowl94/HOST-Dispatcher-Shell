@@ -21,5 +21,5 @@ struct resources
     unsigned int remaining_drives;  
 };
 
-void create_null_resources(struct resources* rsrcs);
+void create_null_resources();
 bool check_resources(struct pcb* p, struct resources* rsrcs);

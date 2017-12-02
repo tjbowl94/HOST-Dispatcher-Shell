@@ -12,15 +12,19 @@
 #include "resources.h"
 
 
-void create_null_resources(struct resources* rsrcs)
+void create_null_resources()
 {
+    struct resources* rsrcs = (struct resources*)malloc(sizeof(struct resources));
     rsrcs->remaining_printers = 0;
     rsrcs->remaining_scanners = 0;
     rsrcs->remaining_modems = 0;
     rsrcs->remaining_drives = 0;
 }
 
-bool check_resources(struct pcb* p, unsigned int r_printers, unsigned int r_scanners, unsigned int r_modems, unsigned int r_drives)
+bool check_resources(struct pcb* p, struct resources* rsrcs)
 {
-    return (r_printers >= p->num_printers && r_scanners >= p->num_scanners && r_modems >= p->num_modems && r_drives >= p->num_drives);
+    return (rsrcs->remaining_printers >= p->num_printers && 
+        rsrcs->remaining_scanners >= p->num_scanners && 
+        rsrcs->remaining_modems >= p->num_modems && 
+        rsrcs->remaining_drives >= p->num_drives);
 }
