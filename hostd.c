@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
     struct pcb* current_process = NULL;
     struct pcb* process = NULL;
-    
+
     int timer = 0;
 
     if (argc == 2)
@@ -39,13 +39,13 @@ int main(int argc, char* argv[])
         exit(0);
     }
 
-    if (!(input_list_stream = fopen(inputfile, "r")))
+    if (!(input_list_stream = fopen(input_file, "r")))
     {
         // Print error message
         exit(0);
     }
 
-    fill_input_queue();
+    fill_input_queue(input_file, input_list_stream, input_queue);
     
     while (input_queue || current_process)
     {
@@ -60,8 +60,10 @@ void print_usage()
     printf("\nPlease supply a file specifying a sequence of processes as an argument when running this file.\n\n");
 }
 
-void fill_input_queue()
+void fill_input_queue(char* input_file, FILE*, input_list_stream, struct pcb* input_queue)
 {
+    struct pcb* process;
+
     while (!feof(input_list_stream))
     {
         process = create_null_pcb();
