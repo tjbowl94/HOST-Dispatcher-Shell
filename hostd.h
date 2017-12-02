@@ -17,7 +17,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-
 #include "process.h"
 
+
 void print_usage();
+void fill_input_queue();
