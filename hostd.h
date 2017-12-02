@@ -21,4 +21,4 @@
 
 
 void print_usage();
-void fill_input_queue(char* input_file, FILE*, input_list_stream, struct pcb* input_queue);
+void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue);
