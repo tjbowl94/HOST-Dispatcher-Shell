@@ -96,6 +96,7 @@ int main(int argc, char* argv[])
 
         if (current_process)    // There is a process currently running
         {
+            printf("There is a process currently running.");
             if (--current_process->remaining_cpu_time == 0) // The process has finished
             {
                 terminate_pcb(current_process);
@@ -163,6 +164,8 @@ int main(int argc, char* argv[])
         }
 
         printf("Checkpoint 5...\n");
+
+        printf("Time remaining on current process: %d", current_process->remaining_cpu_time);
 
         sleep(1);
         timer += 1;
