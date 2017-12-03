@@ -11,27 +11,29 @@
 
 #include "hostd.h"
 
+/*
+**  Global Variables
+*/
+struct pcb* input_queue = NULL;
+struct pcb* real_time_queue = NULL;
+struct pcb* user_job_queue = NULL;
+struct pcb* priority_one_queue = NULL;
+struct pcb* priority_two_queue = NULL;
+struct pcb* priority_three_queue = NULL;
+
+struct pcb* current_process = NULL;
+struct pcb* process = NULL;
+
+struct mab* memory = NULL;
+
+struct resources* rsrcs = NULL;
+
+unsigned int timer = 0;
 
 int main(int argc, char* argv[])
 {
     char* input_file;
     FILE* input_list_stream;
-
-    struct pcb* input_queue = NULL;
-    struct pcb* real_time_queue = NULL;
-    struct pcb* user_job_queue = NULL;
-    struct pcb* priority_one_queue = NULL;
-    struct pcb* priority_two_queue = NULL;
-    struct pcb* priority_three_queue = NULL;
-
-    struct pcb* current_process = NULL;
-    struct pcb* process = NULL;
-
-    struct mab* memory = NULL;
-
-    struct resources* rsrcs = NULL;
-
-    unsigned int timer = 0;
 
     if (argc == 2)
     {
@@ -50,7 +52,7 @@ int main(int argc, char* argv[])
         exit(0);
     }
 
-    input_queue = fill_input_queue(input_file, input_list_stream, input_queue);
+    fill_input_queue(input_file, input_list_stream);
 
     if (input_queue)
     {
@@ -59,7 +61,7 @@ int main(int argc, char* argv[])
 
     initialize_system(memory, rsrcs);
     
-    while (!complete(input_queue, real_time_queue, user_job_queue, priority_one_queue, priority_two_queue, priority_three_queue, current_process))
+    while (!complete())
     {
         printf("Checkpoint 1...\n");
 
@@ -196,7 +198,7 @@ void print_usage()
     printf("\nPlease supply a file specifying a sequence of processes as an argument when running this file.\n\n");
 }
 
-struct pcb* fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue)
+void fill_input_queue(char* input_file, FILE* input_list_stream)
 {
     struct pcb* process;
     char line[50];
@@ -236,14 +238,13 @@ struct pcb* fill_input_queue(char* input_file, FILE* input_list_stream, struct p
         process = NULL;
     }
 
-    return input_queue;
     fclose(input_list_stream);
 }
 
-void initialize_system(struct mab* mem, struct resources* rsrcs)
+void initialize_system()
 {
-    mem = create_null_mab();
-    mem->size = TOTAL_MEMORY;
+    memory = create_null_mab();
+    memory->size = TOTAL_MEMORY;
     rsrcs = create_null_resources();
     rsrcs->remaining_printers = TOTAL_PRINTERS;
     rsrcs->remaining_scanners = TOTAL_SCANNERS;
@@ -251,7 +252,8 @@ void initialize_system(struct mab* mem, struct resources* rsrcs)
     rsrcs->remaining_drives = TOTAL_DRIVES;
 }
 
-bool complete(struct pcb* i_q, struct pcb* r_t_q, struct pcb* u_j_q, struct pcb* p_one_q, struct pcb* p_two_q, struct pcb* p_three_q, struct pcb* cur_p)
+bool complete()
 {
-    return (!i_q && !r_t_q && !u_j_q && !p_one_q && !p_two_q && !p_three_q && !cur_p);
+    return (!input_queue && !real_time_queue && !user_job_queue && !priority_one_queue 
+        && !priority_two_queue && !priority_three_queue && !current_process);
 }
