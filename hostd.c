@@ -193,9 +193,12 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
 
     while (fgets(line, 50, input_list_stream))
     {
+        process = create_null_pcb();
+
         char* s = strtok(line, ",");
         int nums[8];
         int i = 0;
+
         while (s)
         {
             int n = atoi(s);
@@ -203,6 +206,7 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
             nums[i] = n;
             ++i;
         }
+
         process->arrival_time = nums[0];
         process->priority = nums[1];
         process->remaining_cpu_time = nums[2];
@@ -211,8 +215,9 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
         process->num_scanners = nums[5];
         process->num_modems = nums[6];
         process->num_drives = nums[7];
-        
+
         enqueue_pcb(input_queue, process);
+        process = NULL;
     }
     fclose(input_list_stream);
 }
