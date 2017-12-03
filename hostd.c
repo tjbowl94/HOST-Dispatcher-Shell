@@ -60,6 +60,11 @@ int main(int argc, char* argv[])
     }
 
     initialize_system(memory, rsrcs);
+
+    if (!memory)
+    {
+	printf("No memory\n");
+    }
     
     while (!complete())
     {
@@ -179,6 +184,7 @@ int main(int argc, char* argv[])
             else
             {
                 start_pcb(current_process);
+		current_process->mem_block = allocate_memory(memory, current_process->mbytes);
             }
         }
 

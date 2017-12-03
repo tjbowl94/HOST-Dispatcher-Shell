@@ -47,6 +47,14 @@ struct mab* allocate_memory(struct mab* mem_block, unsigned int size)
         {
             m->allocated = true;
         }
+	else
+	{
+	    printf("split memory failed.\n");
+	}
+    }
+    else
+    {
+	printf("fit memory failed.\n");
     }
     return m;
 }
