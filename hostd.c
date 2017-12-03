@@ -59,6 +59,8 @@ int main(int argc, char* argv[])
 
         while (input_queue && input_queue->arrival_time <= timer)
         {
+            printf("Conditional 1.\n");
+
             struct pcb* p = dequeue_pcb(&input_queue);
             if (p->priority == 0)
             {
@@ -75,6 +77,8 @@ int main(int argc, char* argv[])
         while(user_job_queue && fit_memory(memory, user_job_queue->mbytes) && 
         check_resources(user_job_queue, rsrcs))
         {
+            printf("Conditional 2.\n");
+
             struct pcb* p = dequeue_pcb(&user_job_queue);
             struct mab* m = allocate_memory(memory, p->mbytes);
             allocate_resources(p, rsrcs);
@@ -96,7 +100,7 @@ int main(int argc, char* argv[])
 
         if (current_process)    // There is a process currently running
         {
-            printf("There is a process currently running.");
+            printf("Conditional 3.\n");
             if (--current_process->remaining_cpu_time == 0) // The process has finished
             {
                 terminate_pcb(current_process);
@@ -136,6 +140,8 @@ int main(int argc, char* argv[])
 
         if (real_time_queue || priority_one_queue || priority_two_queue || priority_three_queue)
         {
+            printf("Conditional 4.\n");
+
             if (real_time_queue)
             {
                 current_process = dequeue_pcb(&real_time_queue);
