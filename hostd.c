@@ -195,16 +195,18 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
     while (!feof(input_list_stream))
     {
         process = create_null_pcb();
-        if (fscanf(input_list_stream, "%u, %u, %u, %u, %u, %u, %u, %u",
-            &(process->arrival_time),
-            &(process->priority),
-            &(process->remaining_cpu_time),
-            &(process->mbytes),
-            &(process->num_printers),
-            &(process->num_scanners),
-            &(process->num_modems),
-            &(process->num_drives)) != 8)
+        int test_num = fscanf(input_list_stream, "%u, %u, %u, %u, %u, %u, %u, %u",
+        &(process->arrival_time),
+        &(process->priority),
+        &(process->remaining_cpu_time),
+        &(process->mbytes),
+        &(process->num_printers),
+        &(process->num_scanners),
+        &(process->num_modems),
+        &(process->num_drives))
+        if (test_num != 8)
         {
+            printf("Test num: %d", test_num);
             free(process);
             continue;
         }
