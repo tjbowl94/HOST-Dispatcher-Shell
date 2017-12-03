@@ -198,7 +198,7 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
         {
             int n = atoi(s);
             s = strtok(NULL, ",");
-            printf("The current number is: %d\n");
+            printf("The current number is: %d\n", n);
         }
     }
 
