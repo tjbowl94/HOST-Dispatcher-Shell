@@ -210,7 +210,7 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
         {
             err_value = errno;
             printf("Test num: %d\n", test_num);
-            printf("Errno: %d\n", err_value;)
+            printf("Errno: %d\n", err_value);
             free(process);
             continue;
         }
