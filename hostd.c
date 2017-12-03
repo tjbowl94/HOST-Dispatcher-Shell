@@ -189,49 +189,36 @@ void print_usage()
 void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue)
 {
     struct pcb* process;
-    
-    while (!feof(input_list_stream))
-    {
-        process = create_null_pcb();
-        unsigned int n1, n2, n3, n4, n5, n6, n7, n8;
-        int test_num = fscanf(input_list_stream, "%u, %u, %u, %u, %u, %u, %u, %u",
-        &n1, &n2, &n3, &n4, &n5, &n6, &n7, &n8);
-        printf("Test num: %d\n", test_num);
-    }
+    int n1, n2, n3, n4, n5, n6, n7, n8;
 
-    /*
     printf("Filling input queue...\n");
 
     struct pcb* process;
 
     while (!feof(input_list_stream))
     {
-        int err_value;
-
         process = create_null_pcb();
         int test_num = fscanf(input_list_stream, "%u, %u, %u, %u, %u, %u, %u, %u",
-        &(process->arrival_time),
-        &(process->priority),
-        &(process->remaining_cpu_time),
-        &(process->mbytes),
-        &(process->num_printers),
-        &(process->num_scanners),
-        &(process->num_modems),
-        &(process->num_drives));
+        &n1, &n2, &n3, &n4, &n5, &n6, &n7, &n8);
         if (test_num != 8)
         {
-            err_value = errno;
             printf("Test num: %d\n", test_num);
-            printf("Errno: %d\n", err_value);
             free(process);
             continue;
         }
+        process->arrival_time = n1;
+        process->priority = n2;
+        process->remaining_cpu_time = n3;
+        process->mbytes = n4;
+        process->num_printers = n5;
+        process->num_scanners = n6;
+        process->num_modems = n7;
+        process->num_drives = n8;
         process->status = PCB_INITIALIZED;
         input_queue = enqueue_pcb(input_queue, process);
     }
 
     printf("Done filling input queue...\n");
-    */
 }
 
 void initialize_system(struct mab* mem, struct resources* rsrcs)
