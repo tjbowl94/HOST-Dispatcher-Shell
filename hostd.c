@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
         exit(0);
     }
 
-    fill_input_queue(input_file, input_list_stream, input_queue);
+    input_queue = fill_input_queue(input_file, input_list_stream, input_queue);
 
     if (input_queue)
     {
@@ -191,7 +191,7 @@ void print_usage()
     printf("\nPlease supply a file specifying a sequence of processes as an argument when running this file.\n\n");
 }
 
-void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue)
+struct pcb* fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue)
 {
     struct pcb* process;
     char line[50];
@@ -230,6 +230,8 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
 
         process = NULL;
     }
+
+    return input_queue;
     fclose(input_list_stream);
 }
 
