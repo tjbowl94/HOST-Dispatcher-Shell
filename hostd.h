@@ -28,6 +28,22 @@
 #define TOTAL_MODEMS    1
 #define TOTAL_DRIVES    2
 
+// Global variables
+struct pcb* input_queue = NULL;
+struct pcb* real_time_queue = NULL;
+struct pcb* user_job_queue = NULL;
+struct pcb* priority_one_queue = NULL;
+struct pcb* priority_two_queue = NULL;
+struct pcb* priority_three_queue = NULL;
+
+struct pcb* current_process = NULL;
+struct pcb* process = NULL;
+
+struct mab* memory = NULL;
+
+struct resources* rsrcs = NULL;
+
+unsigned int timer = 0;
 
 void print_usage();
 void fill_input_queue(char* input_file, FILE* input_list_stream);
