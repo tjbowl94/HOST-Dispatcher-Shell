@@ -11,24 +11,6 @@
 
 #include "hostd.h"
 
-/*
-**  Global Variables
-*/
-struct pcb* input_queue = NULL;
-struct pcb* real_time_queue = NULL;
-struct pcb* user_job_queue = NULL;
-struct pcb* priority_one_queue = NULL;
-struct pcb* priority_two_queue = NULL;
-struct pcb* priority_three_queue = NULL;
-
-struct pcb* current_process = NULL;
-struct pcb* process = NULL;
-
-struct mab* memory = NULL;
-
-struct resources* rsrcs = NULL;
-
-unsigned int timer = 0;
 
 int main(int argc, char* argv[])
 {
