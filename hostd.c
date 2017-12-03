@@ -109,10 +109,15 @@ int main(int argc, char* argv[])
             printf("Conditional 3.\n");
             if (--current_process->remaining_cpu_time == 0) // The process has finished
             {
+                printf("a.1\n");
                 terminate_pcb(current_process);
+                printf("a.2\n");
                 free_memory(current_process->mem_block);
+                printf("a.3\n");
                 free_resources(current_process, rsrcs);
+                printf("a.4\n");
                 free(current_process);
+                printf("a.5\n");
                 current_process = NULL;
             }
             else    // The process hasn't finished
