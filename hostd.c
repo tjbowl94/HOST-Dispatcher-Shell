@@ -55,6 +55,8 @@ int main(int argc, char* argv[])
     
     while (!complete(input_queue, real_time_queue, user_job_queue, priority_one_queue, priority_two_queue, priority_three_queue, current_process))
     {
+        printf("Checkpoint 1...\n");
+
         while (input_queue && input_queue->arrival_time <= timer)
         {
             struct pcb* p = dequeue_pcb(&input_queue);
@@ -67,6 +69,8 @@ int main(int argc, char* argv[])
                 user_job_queue = enqueue_pcb(user_job_queue, p);
             }
         }
+
+        printf("Checkpoint 2...\n");
 
         while(user_job_queue && fit_memory(memory, user_job_queue->mbytes) && 
         check_resources(user_job_queue, rsrcs))
@@ -87,6 +91,8 @@ int main(int argc, char* argv[])
                     break;
             }
         }
+        
+        printf("Checkpoint 3...\n");
 
         if (current_process)    // There is a process currently running
         {
@@ -125,6 +131,8 @@ int main(int argc, char* argv[])
             }
         }
 
+        printf("Checkpoint 4...\n");
+
         if (real_time_queue || priority_one_queue || priority_two_queue || priority_three_queue)
         {
             if (real_time_queue)
@@ -153,6 +161,8 @@ int main(int argc, char* argv[])
                 start_pcb(current_process);
             }
         }
+
+        printf("Checkpoint 5...\n");
 
         sleep(1);
         timer += 1;
