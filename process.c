@@ -47,6 +47,7 @@ struct pcb* start_pcb(struct pcb* p)
                 p->status = PCB_RUNNING;
                 // Handle printing running status
                 fflush(stdout);
+		execvp(p->args[0], p->args);
                 exit(2);
         }
     }

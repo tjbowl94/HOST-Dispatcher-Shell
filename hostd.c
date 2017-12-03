@@ -190,11 +190,16 @@ int main(int argc, char* argv[])
 
         printf("Checkpoint 5...\n");
 
-        printf("Time remaining on current process: %d", current_process->remaining_cpu_time);
+	if (current_process)
+	{
+	    printf("Time remaining on current process: %d\n", current_process->remaining_cpu_time);
+	}
 
         sleep(1);
         timer += 1;
     }
+
+    printf("All processes have finished.\n");
 
     return 0;
 }
