@@ -189,7 +189,7 @@ void print_usage()
 void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue)
 {
     struct pcb* process;
-    int n1, n2, n3, n4, n5, n6, n7, n8;
+    unsigned int n1, n2, n3, n4, n5, n6, n7, n8;
 
     printf("Filling input queue...\n");
 
