@@ -193,8 +193,6 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
 
     printf("Filling input queue...\n");
 
-    struct pcb* process;
-
     while (!feof(input_list_stream))
     {
         process = create_null_pcb();
