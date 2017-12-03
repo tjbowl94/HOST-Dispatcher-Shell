@@ -62,7 +62,8 @@ int main(int argc, char* argv[])
         while (input_queue && input_queue->arrival_time <= timer)
         {
 	    printf("Removing from input queue.\n");
-            struct pcb* p = dequeue_pcb(&input_queue);
+            struct pcb* p = input_queue;
+	    input_queue = dequeue_pcb(input_queue);
             if (p->priority == 0)
             {
                 real_time_queue = enqueue_pcb(real_time_queue, p);
@@ -77,19 +78,23 @@ int main(int argc, char* argv[])
         check_resources(user_job_queue, rsrcs))
         {
 	    printf("Removing job from user job queue.\n");
-            struct pcb* p = dequeue_pcb(&user_job_queue);
-            struct mab* m = allocate_memory(memory, p->mbytes);
+            struct pcb* p = user_job_queue;
+	    user_job_queue = dequeue_pcb(user_job_queue);
+            p->mem_block = allocate_memory(memory, p->mbytes);	
             allocate_resources(p, rsrcs);
             switch(p->priority)
             {
                 case 1:
-                    enqueue_pcb(priority_one_queue, p);
+                    priority_one_queue = enqueue_pcb(priority_one_queue, p);
+		    printf("Entering into priority one queue\n");
                     break;
                 case 2:
-                    enqueue_pcb(priority_two_queue, p);
+                    priority_two_queue = enqueue_pcb(priority_two_queue, p);
+		    printf("Entering into priority two queue\n");
                     break;
                 default:
-                    enqueue_pcb(priority_three_queue, p);
+                    priority_three_queue = enqueue_pcb(priority_three_queue, p);
+		    printf("Entering into priority three queue\n");
                     break;
             }
         }
@@ -119,13 +124,13 @@ int main(int argc, char* argv[])
                     switch(p->priority)
                     {
                         case 1:
-                            enqueue_pcb(priority_one_queue, p);
+                            priority_one_queue = enqueue_pcb(priority_one_queue, p);
                             break;
                         case 2:
-                            enqueue_pcb(priority_two_queue, p);
+                            priority_two_queue = enqueue_pcb(priority_two_queue, p);
                             break;
                         default:
-                            enqueue_pcb(priority_three_queue, p);
+                            priority_three_queue = enqueue_pcb(priority_three_queue, p);
                             break;
                     }
                     current_process = NULL;
@@ -136,29 +141,25 @@ int main(int argc, char* argv[])
         if ((real_time_queue || priority_one_queue || priority_two_queue || priority_three_queue) && (!current_process))
         {
 	    printf("Switching to a new process.\n");
-	    if (real_time_queue)
-		printf("rtq\n");
-	    if (priority_one_queue)
-		printf("p1q\n");
-	    if (priority_two_queue)
-		printf("p2q\n");
-	    if (priority_three_queue)
-		printf("p3q\n");
             if (real_time_queue)
             {
-                current_process = dequeue_pcb(&real_time_queue);
+                current_process = real_time_queue;
+		real_time_queue = dequeue_pcb(real_time_queue);
             }
             else if (priority_one_queue)
             {
-                current_process = dequeue_pcb(&priority_one_queue);
+                current_process = priority_one_queue;
+		priority_one_queue = dequeue_pcb(priority_one_queue);
             }
             else if (priority_two_queue)
             {
-                current_process = dequeue_pcb(&priority_two_queue);
+                current_process = priority_two_queue;
+		priority_two_queue = dequeue_pcb(priority_two_queue);
             }
             else
             {
-                current_process = dequeue_pcb(&priority_three_queue);
+                current_process = priority_three_queue;
+		priority_three_queue = dequeue_pcb(priority_three_queue);
             }
 
             if (current_process->pid != 0)
@@ -199,6 +200,12 @@ void fill_input_queue(char* input_file, FILE* input_list_stream)
 
     while (fgets(line, 50, input_list_stream))
     {
+	if (line[0] == '\n')
+	{
+	    break;
+	}
+	printf("Line: %s\n", line);
+	
         process = create_null_pcb();
 
         char* s = strtok(line, ",");
@@ -223,11 +230,6 @@ void fill_input_queue(char* input_file, FILE* input_list_stream)
         process->num_drives = nums[7];
 
         input_queue = enqueue_pcb(input_queue, process);
-
-        if (input_queue)
-        {
-            printf("Input queue not null\n");
-        }
 
         process = NULL;
     }

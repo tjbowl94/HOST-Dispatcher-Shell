@@ -56,4 +56,4 @@ struct pcb* restart_pcb(struct pcb* p);
 struct pcb* terminate_pcb(struct pcb* p);
 
 struct pcb* enqueue_pcb(struct pcb* head, struct pcb* p);
-struct pcb* dequeue_pcb(struct pcb** head);
+struct pcb* dequeue_pcb(struct pcb* head);
