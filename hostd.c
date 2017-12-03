@@ -194,11 +194,19 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
     while (fgets(line, 50, input_list_stream))
     {
         char* s = strtok(line, ",");
+        int nums[8];
+        int i = 0;
         while (s)
         {
             int n = atoi(s);
             s = strtok(NULL, ",");
-            printf("The current number is: %d\n", n);
+            nums[i] = n;
+            ++i;
+        }
+        printf("The last line was: \n");
+        for (int j = 0; j < 8; ++j)
+        {
+            printf("%d, ", nums[j]);
         }
     }
 
