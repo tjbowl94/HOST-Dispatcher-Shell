@@ -193,7 +193,13 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
 
     while (fgets(line, 50, input_list_stream))
     {
-        printf("%s\n", line);
+        char* s = strtok(line, ",");
+        while (s)
+        {
+            int n = atoi(s);
+            s = strtok(NULL, ",");
+            printf("The current number is: %d\n");
+        }
     }
 
     fclose(input_list_stream);
