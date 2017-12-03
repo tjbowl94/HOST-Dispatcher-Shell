@@ -216,7 +216,7 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
         process->num_modems = nums[6];
         process->num_drives = nums[7];
 
-        enqueue_pcb(input_queue, process);
+        input_queue = enqueue_pcb(input_queue, process);
         process = NULL;
     }
     fclose(input_list_stream);
