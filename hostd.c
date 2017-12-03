@@ -203,13 +203,17 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
             nums[i] = n;
             ++i;
         }
-        printf("The last line was: \n");
-        for (int j = 0; j < 8; ++j)
-        {
-            printf("%d, ", nums[j]);
-        }
+        process->arrival_time = nums[0];
+        process->priority = nums[1];
+        process->remaining_cpu_time = nums[2];
+        process->mbytes = nums[3];
+        process->num_printers = nums[4];
+        process->num_scanners = nums[5];
+        process->num_modems = nums[6];
+        process->num_drives = nums[7];
+        
+        enqueue_pcb(input_queue, process);
     }
-
     fclose(input_list_stream);
 }
 
