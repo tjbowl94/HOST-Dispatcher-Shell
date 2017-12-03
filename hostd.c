@@ -188,6 +188,18 @@ void print_usage()
 
 void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue)
 {
+    struct pcb* process;
+    
+    while (!feof(input_list_stream))
+    {
+        process = create_null_pcb();
+        unsigned int n1, n2, n3, n4, n5, n6, n7, n8;
+        int test_num = fscanf(input_list_stream, "%u, %u, %u, %u, %u, %u, %u, %u",
+        &n1, &n2, &n3, &n4, &n5, &n6, &n7, &n8);
+        printf("Test num: %d\n", test_num);
+    }
+
+    /*
     printf("Filling input queue...\n");
 
     struct pcb* process;
@@ -219,6 +231,7 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
     }
 
     printf("Done filling input queue...\n");
+    */
 }
 
 void initialize_system(struct mab* mem, struct resources* rsrcs)
