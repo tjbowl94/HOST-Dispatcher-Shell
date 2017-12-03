@@ -29,3 +29,19 @@ bool check_resources(struct pcb* p, struct resources* rsrcs)
         rsrcs->remaining_modems >= p->num_modems && 
         rsrcs->remaining_drives >= p->num_drives);
 }
+
+void allocate_resources(struct pcb* p, struct resources* rsrcs)
+{
+    rsrcs->remaining_printers -= p->num_printers;
+    rsrcs->remaining_scanners -= p->num_scanners;
+    rsrcs->remaining_modems -= p->num_modems;
+    rsrcs->remaining_drives -= p->num_drives;
+}
+
+void free_resources(struct pcb* p, struct resources* rsrcs)
+{
+    rsrcs->remaining_printers += p->num_printers;
+    rsrcs->remaining_scanners += p->num_scanners;
+    rsrcs->remaining_modems += p->num_modems;
+    rsrcs->remaining_drives += p->num_drives;
+}

@@ -73,7 +73,89 @@ int main(int argc, char* argv[])
         {
             struct pcb* p = dequeue_pcb(&user_job_queue);
             struct mab* m = allocate_memory(memory, p->mbytes);
+            allocate_resources(p, rsrcs);
+            switch(p->priority)
+            {
+                case 1:
+                    enqueue_pcb(priority_one_queue, p);
+                    break;
+                case 2:
+                    enqueue_pcb(priority_two_queue, p);
+                    break;
+                default:
+                    enqueue_pcb(priority_three_queue, p);
+                    break;
+            }
         }
+
+        if (current_process)    // There is a process currently running
+        {
+            if (--current_process->remaining_cpu_time == 0) // The process has finished
+            {
+                terminate_pcb(current_process);
+                free_memory(current_process->mem_block);
+                free_resources(current_process, rsrcs);
+                free(current_process);
+                current_process = NULL;
+            }
+            else    // The process hasn't finished
+            {   
+                if (real_time_queue || user_job_queue || priority_one_queue || priority_two_queue || priority_three_queue &&    
+                current_process->priority != 0)     // There are still jobs in the queue(s)
+                {
+                    struct pcb* p = suspend_pcb(current_process);
+                    if (++p->priority > 3)
+                    {
+                        p->priority = 3;
+                    }
+                    switch(p->priority)
+                    {
+                        case 1:
+                            enqueue_pcb(priority_one_queue, p);
+                            break;
+                        case 2:
+                            enqueue_pcb(priority_two_queue, p);
+                            break;
+                        default:
+                            enqueue_pcb(priority_three_queue, p);
+                            break;
+                    }
+                    current_process = NULL;
+                }
+            }
+        }
+
+        if (real_time_queue || priority_one_queue || priority_two_queue || priority_three_queue)
+        {
+            if (real_time_queue)
+            {
+                current_process = dequeue_pcb(&real_time_queue);
+            }
+            else if (priority_one_queue)
+            {
+                current_process = dequeue_pcb(&priority_one_queue);
+            }
+            else if (priority_two_queue)
+            {
+                current_process = dequeue_pcb(&priority_two_queue);
+            }
+            else
+            {
+                current_process = dequeue_pcb(&priority_three_queue);
+            }
+
+            if (current_process->pid != 0)
+            {
+                restart_pcb(current_process);
+            }
+            else
+            {
+                start_pcb(current_process);
+            }
+        }
+
+        sleep(1);
+        timer += 1;
     }
 
     return 0;

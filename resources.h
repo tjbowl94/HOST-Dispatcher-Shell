@@ -23,3 +23,5 @@ struct resources
 
 struct resources* create_null_resources();
 bool check_resources(struct pcb* p, struct resources* rsrcs);
+void allocate_resources(struct pcb* p, struct resources* rsrcs);
+void free_resources(struct pcb* p, struct resources* rsrcs);

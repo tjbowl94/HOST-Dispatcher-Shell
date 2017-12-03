@@ -67,6 +67,12 @@ struct pcb* suspend_pcb(struct pcb* p)
     return p;
 }
 
+struct pcb* restart_pcb(struct pcb* p)
+{
+    kill(p->pid, SIGCONT);
+    return p;
+}
+
 struct pcb* terminate_pcb(struct pcb* p)
 {
     int status;
