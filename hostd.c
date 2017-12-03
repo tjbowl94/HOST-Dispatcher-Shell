@@ -248,5 +248,5 @@ void initialize_system(struct mab* mem, struct resources* rsrcs)
 
 bool complete(struct pcb* i_q, struct pcb* r_t_q, struct pcb* u_j_q, struct pcb* p_one_q, struct pcb* p_two_q, struct pcb* p_three_q, struct pcb* cur_p)
 {
-    return (i_q || r_t_q || u_j_q || p_one_q || p_two_q || p_three_q || cur_p);
+    return (!i_q && !r_t_q && !u_j_q && !p_one_q && !p_two_q && !p_three_q && !cur_p);
 }
