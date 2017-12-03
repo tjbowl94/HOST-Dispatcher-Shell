@@ -53,27 +53,15 @@ int main(int argc, char* argv[])
     }
 
     fill_input_queue(input_file, input_list_stream);
-
-    if (input_queue)
-    {
-        printf("Input queue not null..2\n");
-    }
-
     initialize_system(memory, rsrcs);
-
-    if (!memory)
-    {
-	printf("No memory\n");
-    }
     
     while (!complete())
     {
-        printf("Checkpoint 1...\n");
+	printf("Current time: %d\n", timer);
 
         while (input_queue && input_queue->arrival_time <= timer)
         {
-            printf("Conditional 1.\n");
-
+	    printf("Removing from input queue.\n");
             struct pcb* p = dequeue_pcb(&input_queue);
             if (p->priority == 0)
             {
@@ -85,13 +73,10 @@ int main(int argc, char* argv[])
             }
         }
 
-        printf("Checkpoint 2...\n");
-
         while(user_job_queue && fit_memory(memory, user_job_queue->mbytes) && 
         check_resources(user_job_queue, rsrcs))
         {
-            printf("Conditional 2.\n");
-
+	    printf("Removing job from user job queue.\n");
             struct pcb* p = dequeue_pcb(&user_job_queue);
             struct mab* m = allocate_memory(memory, p->mbytes);
             allocate_resources(p, rsrcs);
@@ -108,30 +93,24 @@ int main(int argc, char* argv[])
                     break;
             }
         }
-        
-        printf("Checkpoint 3...\n");
 
         if (current_process)    // There is a process currently running
         {
-            printf("Conditional 3.\n");
             if (--current_process->remaining_cpu_time == 0) // The process has finished
             {
-                printf("a.1\n");
+		printf("Process finished.\n");
                 terminate_pcb(current_process);
-                printf("a.2\n");
                 free_memory(current_process->mem_block);
-                printf("a.3\n");
                 free_resources(current_process, rsrcs);
-                printf("a.4\n");
                 free(current_process);
-                printf("a.5\n");
                 current_process = NULL;
             }
             else    // The process hasn't finished
             {   
-                if (real_time_queue || user_job_queue || priority_one_queue || priority_two_queue || priority_three_queue &&    
-                current_process->priority != 0)     // There are still jobs in the queue(s)
+                if ((real_time_queue || user_job_queue || priority_one_queue || priority_two_queue || priority_three_queue) &&    
+                (current_process->priority != 0))     // There are still jobs in the queue(s)
                 {
+		    printf("Suspending running process.\n");
                     struct pcb* p = suspend_pcb(current_process);
                     if (++p->priority > 3)
                     {
@@ -154,12 +133,17 @@ int main(int argc, char* argv[])
             }
         }
 
-        printf("Checkpoint 4...\n");
-
-        if (real_time_queue || priority_one_queue || priority_two_queue || priority_three_queue)
+        if ((real_time_queue || priority_one_queue || priority_two_queue || priority_three_queue) && (!current_process))
         {
-            printf("Conditional 4.\n");
-
+	    printf("Switching to a new process.\n");
+	    if (real_time_queue)
+		printf("rtq\n");
+	    if (priority_one_queue)
+		printf("p1q\n");
+	    if (priority_two_queue)
+		printf("p2q\n");
+	    if (priority_three_queue)
+		printf("p3q\n");
             if (real_time_queue)
             {
                 current_process = dequeue_pcb(&real_time_queue);
@@ -180,16 +164,15 @@ int main(int argc, char* argv[])
             if (current_process->pid != 0)
             {
                 restart_pcb(current_process);
+		printf("Restarting process.\n");
             }
             else
             {
                 start_pcb(current_process);
 		current_process->mem_block = allocate_memory(memory, current_process->mbytes);
+		printf("Starting new process.\n");
             }
         }
-
-        printf("Checkpoint 5...\n");
-
 	if (current_process)
 	{
 	    printf("Time remaining on current process: %d\n", current_process->remaining_cpu_time);
