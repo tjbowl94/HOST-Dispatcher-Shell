@@ -52,6 +52,11 @@ int main(int argc, char* argv[])
 
     fill_input_queue(input_file, input_list_stream, input_queue);
 
+    if (input_queue)
+    {
+        printf("Input queue not null..2\n");
+    }
+
     initialize_system(memory, rsrcs);
     
     while (!complete(input_queue, real_time_queue, user_job_queue, priority_one_queue, priority_two_queue, priority_three_queue, current_process))
@@ -217,6 +222,12 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
         process->num_drives = nums[7];
 
         input_queue = enqueue_pcb(input_queue, process);
+
+        if (input_queue)
+        {
+            printf("Input queue not null\n");
+        }
+
         process = NULL;
     }
     fclose(input_list_stream);
