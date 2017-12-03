@@ -203,7 +203,7 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
         &(process->num_printers),
         &(process->num_scanners),
         &(process->num_modems),
-        &(process->num_drives))
+        &(process->num_drives));
         if (test_num != 8)
         {
             printf("Test num: %d", test_num);
