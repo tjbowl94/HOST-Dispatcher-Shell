@@ -78,6 +78,7 @@ struct mab* allocate_memory(struct mab* mem_block, unsigned int size)
         {
             m->allocated = true;
         }
+    }
     return m;
 }
 
