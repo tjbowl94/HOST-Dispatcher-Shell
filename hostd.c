@@ -46,6 +46,7 @@ int main(int argc, char* argv[])
     if (!(input_list_stream = fopen(input_file, "r")))
     {
         // Print error message
+        printf("Error opening file");
         exit(0);
     }
 
@@ -187,6 +188,8 @@ void print_usage()
 
 void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* input_queue)
 {
+    printf("Filling input queue...\n");
+
     struct pcb* process;
 
     while (!feof(input_list_stream))
@@ -202,12 +205,15 @@ void fill_input_queue(char* input_file, FILE* input_list_stream, struct pcb* inp
             &(process->num_modems),
             &(process->num_drives)) != 8)
         {
+            printf("Added a process...\n");
             free(process);
             continue;
         }
         process->status = PCB_INITIALIZED;
         input_queue = enqueue_pcb(input_queue, process);
     }
+
+    printf("Done filling input queue...\n");
 }
 
 void initialize_system(struct mab* mem, struct resources* rsrcs)
