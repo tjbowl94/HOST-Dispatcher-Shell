@@ -39,7 +39,7 @@ struct mab* create_null_mab()
 ** Function: fit_memory()
 ** ---------------------------------
 ** Determines whether a process of a particular size can fit in a memory block. Returns
-** pointer to a mab that is big enough if found, NULL if none is found
+** pointer to a mab that is big enough if found, NULL if none is found. Uses the first-fit algorithm
 **
 ** in: struct mab* - memory block to search, unsigned int size - size of new block
 ** out: struct mab* (if suitable mab found), NULL (if none found)
