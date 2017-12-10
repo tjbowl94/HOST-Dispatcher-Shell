@@ -6,10 +6,13 @@
 **
 **      file description: hostd.c
 **	----------------------------
-**
+**	Source file for the host dispatcher, includes most of the core logic that powers the system.
+**	Contains definitions for functions used in this file, as well as the main() function which contains
+**	the logic for running the program.
 */
 
 
+// Includes
 #include "hostd.h"
 
 
@@ -162,26 +165,44 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+/*
+** Function: print_usage()
+** ---------------------------------
+** Prints the correct usage of the program when the user attempts to run the program without
+** specifying an input file
+**
+** in: void
+** out: void - just a print message to console
+*/
 void print_usage()
 {
     printf("\nPlease supply a file specifying a sequence of processes as an argument when running this file.\n\n");
 }
 
+/*
+** Function: fill_input_queue()
+** ---------------------------------
+** Reads a file, parses it and interprets each line as a process based on a set of parameters. Then filles the
+** input queue based on these newly created processes
+**
+** in: file containing list of processes
+** out: void - fills input queue with processes
+*/
 void fill_input_queue(char* input_file, FILE* input_list_stream)
 {
-    struct pcb* process;
-    char line[50];
+    struct pcb* process;	// Pointer to new process to create
+    char line[50];	// Line buffer
 
-    while (fgets(line, 50, input_list_stream))
+    while (fgets(line, 50, input_list_stream))	// Loop through the file line by line
     {
-	if (line[0] == '\n')
+	if (line[0] == '\n')	// Exit loop when file ends
 	{
 	    break;
 	}
 	
-        process = create_null_pcb();
+        process = create_null_pcb();	// Create null process
 
-        char* s = strtok(line, ",");
+        char* s = strtok(line, ",");	// Parse the line for eight parameters of process
         int nums[8];
         int i = 0;
 
@@ -193,7 +214,7 @@ void fill_input_queue(char* input_file, FILE* input_list_stream)
             ++i;
         }
 
-        process->arrival_time = nums[0];
+        process->arrival_time = nums[0];	// Assign process attributes accordingly
         process->priority = nums[1];
         process->remaining_cpu_time = nums[2];
         process->mbytes = nums[3];
@@ -202,27 +223,44 @@ void fill_input_queue(char* input_file, FILE* input_list_stream)
         process->num_modems = nums[6];
         process->num_drives = nums[7];
 
-        input_queue = enqueue_pcb(input_queue, process);
+        input_queue = enqueue_pcb(input_queue, process);	// Add process to input queue
 
         process = NULL;
     }
 
-    fclose(input_list_stream);
+    fclose(input_list_stream);	// Close the file
 }
 
+/*
+** Function: initialize_system()
+** ---------------------------------
+** Assigns values to global variables based on parameters of the system as specified. 
+** Assigns memory and resources
+**
+** in: void
+** out: void - assigns values to global variables
+*/
 void initialize_system()
 {
-    memory = create_null_mab();
+    memory = create_null_mab();	// Create main memory block
     memory->size = TOTAL_MEMORY - RESERVED_MEMORY;
-    reserved_memory = create_null_mab();
+    reserved_memory = create_null_mab();	// Create reserved memory block
     reserved_memory->size = RESERVED_MEMORY;
-    rsrcs = create_null_resources();
+    rsrcs = create_null_resources();	// Create resources
     rsrcs->remaining_printers = TOTAL_PRINTERS;
     rsrcs->remaining_scanners = TOTAL_SCANNERS;
     rsrcs->remaining_modems = TOTAL_MODEMS;
     rsrcs->remaining_drives = TOTAL_DRIVES;
 }
 
+/*
+** Function: complete()
+** ---------------------------------
+** Checks whether the system has completed all processes by checking if all the queues are empty
+**
+** in: void
+** out: bool - whether or not the system has finished its job
+*/
 bool complete()
 {
     return (!input_queue && !real_time_queue && !user_job_queue && !priority_one_queue 
