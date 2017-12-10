@@ -59,3 +59,7 @@ void print_usage();	// Print the correct usage of the program when it is attempt
 void fill_input_queue(char* input_file, FILE* input_list_stream);	// Fill the input queue based on input file
 void initialize_system();	// Initialize essential components of the system, such as memory and resource info
 bool complete();	// Check if the system has completed all processes
+void check_input_queue();	// Remove processes from input queue and place in appropriate queue
+void check_user_job_queue();	// Remove processes from user job queue and place in appropriate queue
+void handle_current_process();	// Does work on current process, and handles terminating or suspending the process if necessary
+void assign_current_process();	// Assigns a new process to be worked on
