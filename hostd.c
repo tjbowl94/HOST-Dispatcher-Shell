@@ -4,7 +4,8 @@
 **      date:       11/28/2017
 **      class:      CSC400, Fall 2017 - Dr. Zhang
 **
-**      file description: 
+**      file description: hostd.c
+**	----------------------------
 **
 */
 
@@ -39,11 +40,8 @@ int main(int argc, char* argv[])
     
     while (!complete())
     {
-	printf("Current time: %d\n", timer);
-
         while (input_queue && input_queue->arrival_time <= timer)
         {
-	    printf("Removing from input queue.\n");
             struct pcb* p = input_queue;
 	    input_queue = dequeue_pcb(input_queue);
             if (p->priority == 0)
@@ -59,24 +57,20 @@ int main(int argc, char* argv[])
         while(user_job_queue && fit_memory(memory, user_job_queue->mbytes) && 
         check_resources(user_job_queue, rsrcs))
         {
-	    printf("Removing job from user job queue.\n");
             struct pcb* p = user_job_queue;
 	    user_job_queue = dequeue_pcb(user_job_queue);
-            p->mem_block = allocate_memory(memory, p->mbytes);	
+            //p->mem_block = allocate_memory(memory, p->mbytes);	
             allocate_resources(p, rsrcs);
             switch(p->priority)
             {
                 case 1:
                     priority_one_queue = enqueue_pcb(priority_one_queue, p);
-		    printf("Entering into priority one queue\n");
                     break;
                 case 2:
                     priority_two_queue = enqueue_pcb(priority_two_queue, p);
-		    printf("Entering into priority two queue\n");
                     break;
                 default:
                     priority_three_queue = enqueue_pcb(priority_three_queue, p);
-		    printf("Entering into priority three queue\n");
                     break;
             }
         }
@@ -85,7 +79,6 @@ int main(int argc, char* argv[])
         {
             if (--current_process->remaining_cpu_time == 0) // The process has finished
             {
-		printf("Process finished.\n");
                 terminate_pcb(current_process);
                 free_memory(current_process->mem_block);
                 free_resources(current_process, rsrcs);
@@ -97,7 +90,6 @@ int main(int argc, char* argv[])
                 if ((real_time_queue || user_job_queue || priority_one_queue || priority_two_queue || priority_three_queue) &&    
                 (current_process->priority != 0))     // There are still jobs in the queue(s)
                 {
-		    printf("Suspending running process.\n");
                     struct pcb* p = suspend_pcb(current_process);
                     if (++p->priority > 3)
                     {
@@ -122,7 +114,6 @@ int main(int argc, char* argv[])
 
         if ((real_time_queue || priority_one_queue || priority_two_queue || priority_three_queue) && (!current_process))
         {
-	    printf("Switching to a new process.\n");
             if (real_time_queue)
             {
                 current_process = real_time_queue;
@@ -147,19 +138,20 @@ int main(int argc, char* argv[])
             if (current_process->pid != 0)
             {
                 restart_pcb(current_process);
-		printf("Restarting process.\n");
             }
             else
             {
                 start_pcb(current_process);
-		current_process->mem_block = allocate_memory(memory, current_process->mbytes);
-		printf("Starting new process.\n");
+		if (current_process->priority == 0)
+		{
+		    current_process->mem_block = allocate_memory(reserved_memory, current_process->mbytes);
+		}
+		else
+		{
+		    current_process->mem_block = allocate_memory(memory, current_process->mbytes);
+		}
             }
         }
-	if (current_process)
-	{
-	    printf("Time remaining on current process: %d\n", current_process->remaining_cpu_time);
-	}
 
         sleep(1);
         timer += 1;
@@ -186,7 +178,6 @@ void fill_input_queue(char* input_file, FILE* input_list_stream)
 	{
 	    break;
 	}
-	printf("Line: %s\n", line);
 	
         process = create_null_pcb();
 
@@ -222,7 +213,9 @@ void fill_input_queue(char* input_file, FILE* input_list_stream)
 void initialize_system()
 {
     memory = create_null_mab();
-    memory->size = TOTAL_MEMORY;
+    memory->size = TOTAL_MEMORY - RESERVED_MEMORY;
+    reserved_memory = create_null_mab();
+    reserved_memory->size = RESERVED_MEMORY;
     rsrcs = create_null_resources();
     rsrcs->remaining_printers = TOTAL_PRINTERS;
     rsrcs->remaining_scanners = TOTAL_SCANNERS;
